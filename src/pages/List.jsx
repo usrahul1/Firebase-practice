@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { useFirebase } from "../context/Firebase";
 
 const List = () => {
 	const [name, setName] = useState("");
@@ -8,7 +9,18 @@ const List = () => {
 	const [price, setPrice] = useState("");
 	const [coverPic, setCoverPic] = useState("");
 
-	const handleSubmit = () => {};
+	const firebase = useFirebase();
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		const res = await firebase.handleCreateNewListing(
+			name,
+			isbnNumber,
+			price,
+			coverPic
+		);
+		console.log(res);
+	};
 
 	return (
 		<div className="container mt-5">
@@ -44,10 +56,9 @@ const List = () => {
 				</Form.Group>
 
 				<Form.Group className="mb-3" controlId="formBasicPassword">
-					<Form.Label>Price</Form.Label>
+					<Form.Label>Cover pic</Form.Label>
 					<Form.Control
 						onChange={(e) => setCoverPic(e.target.files[0])}
-						value={coverPic}
 						type="file"
 						placeholder="ISBN Number"
 					/>
